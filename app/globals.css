@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+:root {
+  --background: #151515;
+  --foreground: #ffffffde;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Pretendard', Arial, Helvetica, sans-serif;
+}
+
+
+.text-gray4c {
+    --tw-text-opacity: 1;
+    color: rgb(76 76 76 / var(--tw-text-opacity, 1));
+}
+
+
+.bg-gray-50{
+    --tw-bg-opacity: 1;
+    background-color: rgb(21, 21, 21 / var(--tw-bg-opacity));
+}
+.text-gray8f {
+    --tw-text-opacity: 1;
+    color: rgb(143 143 143 / var(--tw-text-opacity, 1));
+}
+.border-gray25 {
+    --tw-border-opacity: 1;
+    border-color: rgb(37 37 37 / var(--tw-border-opacity, 1));
+}
+.bg-gray25{
+    --tw-bg-opacity: 1;
+    background-color: rgb(37 37 37 / var(--tw-bg-opacity, 1));
+}
+
+.bg-gray1e {
+    --tw-bg-opacity: 1;
+    background-color: rgb(30 30 30 / var(--tw-bg-opacity, 1));
+}
+.bg-gray29 { 
+    --tw-bg-opacity: 1;
+    background-color: rgb(141 141 141 / var(--tw-bg-opacity, 1));
+}
+.text-gray15 {
+    --tw-text-opacity: 1;
+    color: rgb(21 21 21 / var(--tw-text-opacity, 1));
+}
+.caption-1-medium {
+    
+    font-size: .75rem;
+    line-height: 133%;
+    letter-spacing: .24px;
+}
+
+.body-1-normal-medium{
+    
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+.caption-1-regular{
+    font-size: .70rem;
+    font-weight: 400;
+    line-height: 133%;
+    letter-spacing: .24px;
+}
+
+
+.h-headerHeight{
+    height: 65px;
+}
+.headline1{
+    font-size: 18px;
+    line-height: 26px;
+}
+
+.border-right-gradient {
+    border-right: 1px solid;
+    border-image: linear-gradient(180deg, #151515 0, #252525 10%, #252525 90%, #151515) 1;
+}
+
+.text-graycf {
+    --tw-text-opacity: 1;
+    color: rgb(207 207 207 / var(--tw-text-opacity, 1));
+}
+
+.bg-gray0e {
+    --tw-bg-opacity: 1;
+    background-color: rgb(14 14 14 / var(--tw-bg-opacity, 1));
+}
+
+
+.bg-gray3b {
+    --tw-bg-opacity: 1;
+    background-color: rgb(59 59 59 / var(--tw-bg-opacity, 1));
+}
+.border-gray3b {
+    --tw-border-opacity: 1;
+    border-color: rgb(59 59 59 / var(--tw-border-opacity, 1));
+}
+.bg-gray15 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(21 21 21 / var(--tw-bg-opacity, 1));
+}
+
+.text-gray9f {
+    --tw-text-opacity: 1;
+    color: rgb(159 159 159 / var(--tw-text-opacity, 1));
+}
+.headline-1-bold, .headline-1-medium {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+
+.label-1-normal-medium {
+    font-size: .875rem;
+    line-height: 1.25rem;
+    line-height: 142%;
+    letter-spacing: .14px;
+}
+
+.label-1-normal-regular {
+    font-size: .840rem;
+    font-weight: 400;
+    line-height: 1.25rem;
+    letter-spacing: .14px;
+}
+
+
+
+@layer base {
+  button, [role="button"] {
+    cursor: pointer;
+  }
+}

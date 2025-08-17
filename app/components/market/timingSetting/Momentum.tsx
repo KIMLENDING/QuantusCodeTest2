@@ -2,22 +2,17 @@ import React from 'react'
 import Checkbox from '../../Ui/CheckBox'
 import SelectBoxVirtual from '../../Ui/SelectBoxVirtual'
 import { avgLines, bands, baseLines, indexs } from '@/lib/contents/exData'
-import { useAssetsDataStore } from '@/store/assetsDataStore'
 import SelectBox from '../../Ui/SelectBox'
 import InputBox from '../../Ui/InputBox'
-import { handleBandDaysChange, handleDaysChange, handleWeightChange } from '@/app/utils/inputHandlers'
+import { handleNumber, handleDaysChange, handleWeightChange } from '@/app/utils/inputHandlers'
+import { useMomentumStore } from '@/store/momentumStore'
 
 const Momentum = () => {
-    const { setMomentum, momentum, updateMomentumSettiongs, getMomentumSettings } = useAssetsDataStore();
+    const { setMomentum, momentum, updateMomentumSettiongs, getMomentumSettings } = useMomentumStore();
     const tip = "시장이 상승 추세일 때 투자를 진행하고 하락 추세일 때 현금화를 진행하여 손실을 제한하는 마켓타이밍 알고리즘 입니다. 다양한 시장 인덱스의 가격 및 변동성 기반의 가격 채널을 통해 추세를 판별합니다."
     return (
         <article>
             <div>
-                <h2 className='body-1-normal-medium m-0 text-white'>
-                    <div className='flex items-center gap-[6px] body-1-normal-medium'>
-                        마켓 타이밍 설정
-                    </div>
-                </h2>
                 <div className='flex-shrink-0 h-[30px]' />
                 <Checkbox id="momentum" label="모멘텀 마켓 타이밍" tip={tip}
                     onChange={setMomentum} checked={momentum} />
@@ -33,7 +28,7 @@ const Momentum = () => {
                         <SelectBox label='기준선' options={baseLines}
                             placeholder='기준선을 선택하세요' onChange={value => updateMomentumSettiongs({ baseLine: value })}
                             value={getMomentumSettings().baseLine}
-                            tip='가격 채널의 기준이 되는 수익곡선 입니다. 해당 기준선을 기준으로 상단 밴드와 하단 밴드가 결정됩니다.'
+                            tooltip='가격 채널의 기준이 되는 수익곡선 입니다. 해당 기준선을 기준으로 상단 밴드와 하단 밴드가 결정됩니다.'
                         />
                         <SelectBox label='이동평균 (기준선)' options={avgLines}
                             placeholder='이동평균을 선택하세요' onChange={value => updateMomentumSettiongs({ baseMovingAvg: value })}
@@ -55,7 +50,7 @@ const Momentum = () => {
                         <SelectBox label='경계선 (밴드)' options={bands}
                             placeholder='기준선을 선택하세요' onChange={value => updateMomentumSettiongs({ boundaryLine: value })}
                             value={getMomentumSettings().boundaryLine}
-                            tip='기준선을 기반으로 가격과 변동성을 기반으로 계산된 수익곡선에 가중치를 부여하여 상/하단 밴드를 생성합니다.
+                            tooltip='기준선을 기반으로 가격과 변동성을 기반으로 계산된 수익곡선에 가중치를 부여하여 상/하단 밴드를 생성합니다.
 경계선과 종가의 관계를 통해 상승 추세와 하락 추세를 판별하여 마켓타이밍 시그널을 생성합니다.'
                         />
                         <SelectBox label='이동평균 (경계선)' options={avgLines}
@@ -64,9 +59,9 @@ const Momentum = () => {
                         />
                         <InputBox label='일수' value={getMomentumSettings().boundaryPeriod}
                             onChange={value => updateMomentumSettiongs({ boundaryPeriod: value })}
-                            tip='1 ~ 5까지 입력할 수 있습니다.'
+                            tip='10 ~ 60까지 입력할 수 있습니다.'
                             unit='일' placeholder='일수를 입력하세요'
-                            handler={handleWeightChange}
+                            handler={handleNumber}
                             handleBlur={() => {
                                 if (getMomentumSettings().boundaryPeriod === '' || +getMomentumSettings().boundaryPeriod < 10 || +getMomentumSettings().boundaryPeriod > 60) {
                                     updateMomentumSettiongs({ boundaryPeriod: '20' });
@@ -82,7 +77,7 @@ const Momentum = () => {
                             handler={handleWeightChange}
                             handleBlur={() => {
                                 if (getMomentumSettings().entryWeight === '' || +getMomentumSettings().entryWeight < 1.0 || +getMomentumSettings().entryWeight > 5.0) {
-                                    updateMomentumSettiongs({ entryWeight: '1.5' });
+                                    updateMomentumSettiongs({ entryWeight: '1' });
                                 } else {
 
                                     const formattedValue = parseFloat(getMomentumSettings().entryWeight).toFixed(2);
@@ -95,7 +90,7 @@ const Momentum = () => {
                         />
                         <InputBox label='청산 가중치' value={getMomentumSettings().liquidationWeight}
                             onChange={value => updateMomentumSettiongs({ liquidationWeight: value })}
-                            tip='2.0 - 4.0까지 입력할 수 있습니다.'
+                            tip='1 ~ 5까지 입력할 수 있습니다.'
                             placeholder='청산 가중치를 입력하세요'
                             handler={handleWeightChange}
                             handleBlur={() => {

@@ -34,28 +34,36 @@ interface AssetsDataState {
     rebalancingPeriod: string;
     bandRebalancing: string;
     allExchangeRatesState: boolean;
+
     assetList: AssetData[];
+
     momentum: boolean;
     momentumSettings: MomentumSettings;
+
     reEntry: boolean;
     reEntrySettings: ReEntrySettings;
+
     setStrategyName: (name: string) => void;
     setAlgorithm: (algorithm: string) => void;
     setSeed: (seed: string) => void;
     setRebalancingPeriod: (period: string) => void;
     setBandRebalancing: (band: string) => void;
     setAllExchangeRatesState: () => void;
+
     addAssetList: () => void;
+
+    updateAsset: (id: string, newData: Partial<AssetData>) => void;
+    deleteAsset: (id: string) => void;
+    getAssetItem: (id: string) => AssetData | undefined;
+
+
+
     setMomentum: (momentum: boolean) => void;
     updateMomentumSettiongs: (settings: Partial<MomentumSettings>) => void;
     getMomentumSettings: () => MomentumSettings;
     setReEntry: (reEntry: boolean) => void;
     updateReEntrySettings: (settings: Partial<ReEntrySettings>) => void;
     getReEntrySettings: () => ReEntrySettings;
-    updateAsset: (id: string, newData: Partial<AssetData>) => void;
-    deleteAsset: (id: string) => void;
-    getAssetItem: (id: string) => AssetData | undefined;
-    getExchangeRatesState: (id: string) => boolean | undefined;
     reset: () => void;
     save: () => void;
 }
@@ -212,10 +220,7 @@ export const useAssetsDataStore = create<AssetsDataState>((set, get) => ({
     deleteAsset: (id) => set((state) => ({
         assetList: state.assetList.filter(asset => asset.id !== id)
     })),
-    getExchangeRatesState: (id) => {
-        const asset = get().assetList.find(asset => asset.id === id);
-        return asset ? asset.exchangeRateState : undefined;
-    },
+
     getAssetItem: (id: string) => {
         const asset = get().assetList.find(asset => asset.id === id);
         return asset ? { ...asset } : undefined;

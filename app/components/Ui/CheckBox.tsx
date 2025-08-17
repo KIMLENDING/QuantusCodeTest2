@@ -1,5 +1,3 @@
-import { useAssetsDataStore } from "@/store/assetsDataStore";
-import { useEffect, useState } from "react";
 import TooltipComponent from "./TooltipComponent";
 
 
@@ -9,9 +7,8 @@ interface CheckboxProps {
     tip?: string;
     checked: boolean;
     onChange: (checked: boolean) => void;
-    handler?: (value: boolean, onChange?: (v: boolean) => void) => void;
 }
-const Checkbox = ({ id, label, tip, checked, onChange }: CheckboxProps) => {
+const Checkbox = ({ id, label, tip, checked, onChange, }: CheckboxProps) => {
 
     const handleChange = () => {
         onChange?.(!checked);

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import InputBox from '../Ui/InputBox'
 import { typeOfInvestment } from '@/lib/contents/exData'
 import SelectSearchBox from './SelectSearchBox'
-import { useAssetsDataStore } from '@/store/assetsDataStore'
 import Checkbox from '../Ui/CheckBox'
 import { handlePercentageChange } from '@/app/utils/inputHandlers'
 import SelectBox from '../Ui/SelectBox'
+import { useAssetStore } from '@/store/assetsStore'
 
 interface AssetGroupProps {
     id: string;
@@ -14,7 +14,7 @@ interface AssetGroupProps {
 const AssetGroup = ({ id }: AssetGroupProps) => {
 
     const [data, setData] = useState<any>([]);
-    const { updateAsset, getAssetItem } = useAssetsDataStore();
+    const { updateAsset, getAssetItem } = useAssetStore();
     const asset = getAssetItem(id);
     const usAsset = asset?.type === '미국 자산군' || asset?.type === '미국 ETF' || asset?.type === '미국 주식';
     const fetchData = () => {
@@ -30,15 +30,17 @@ const AssetGroup = ({ id }: AssetGroupProps) => {
 
     // 각 입력값 변경 시 바로 updateAsset 호출
     const handleTypeChange = (type: string) => {
-        updateAsset(id, { type });
+        updateAsset(id, { type });// 종류
     };
     const handleAssetGroupChange = (assetGroup: string) => {
-        updateAsset(id, { assetGroup });
+        updateAsset(id, { assetGroup, exchangeRateState: false }); // 자산군
     };
     const handleWeightChange = (weight: string) => {
         updateAsset(id, { weight });
     };
     const handleExchangeChange = (exchangeRateState: boolean) => {
+        if (!usAsset) return; // 미국 관련 자산군이 아닐 경우 함수 종료
+        if (!asset.assetGroup) return; // 자산군이 선택되지 않은 경우 함수 종료
         updateAsset(id, { exchangeRateState });
     };
 

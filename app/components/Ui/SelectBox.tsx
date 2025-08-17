@@ -8,9 +8,9 @@ interface SelectBoxProps {
     options: string[];
     value?: string | null;
     onChange?: (value: string) => void;
-    tip?: string;
+    tooltip?: string;
 }
-const SelectBox = ({ label, options, placeholder, value: selected, onChange, tip }: SelectBoxProps) => {
+const SelectBox = ({ label, options, placeholder, value: selected, onChange, tooltip }: SelectBoxProps) => {
     const [open, setOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -38,7 +38,7 @@ const SelectBox = ({ label, options, placeholder, value: selected, onChange, tip
             <div className="flex flex-row gap-2">
 
                 <label htmlFor={label} className='label-1-normal-regular text-graycf'>{label}</label>
-                {tip && (<TooltipComponent id={label} content={tip} />)}
+                {tooltip && (<TooltipComponent id={label} content={tooltip} />)}
             </div>
             <div className="relative w-full">
                 <button id={label} className='w-full relative rounded-[6px] focus:ring-1' onClick={() => setOpen((prev) => !prev)}  >

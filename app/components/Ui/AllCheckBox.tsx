@@ -1,4 +1,5 @@
-import { useAssetsDataStore } from "@/store/assetsDataStore";
+import { useAssetStore } from "@/store/assetsStore";
+import { useStrategyStore } from "@/store/strategyStore";
 import { useEffect, useState } from "react";
 import { Tooltip } from "react-tooltip";
 
@@ -10,7 +11,9 @@ interface AllCheckboxProps {
     onChange?: (checked: boolean) => void;
 }
 const AllCheckbox = ({ id = '전체 환율 반영', label = '전체 환율 반영', tip, onChange }: AllCheckboxProps) => {
-    const { allExchangeRatesState, setAllExchangeRatesState, assetList } = useAssetsDataStore();
+    const { allExchangeRatesState, setAllExchangeRatesState } = useStrategyStore();
+
+    const { assetList } = useAssetStore();
     const [checked, setChecked] = useState(false);
     console.log(id, checked, allExchangeRatesState);
 

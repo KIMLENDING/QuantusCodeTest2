@@ -6,15 +6,15 @@ import TooltipComponent from './TooltipComponent';
 interface InputBoxProps {
     label: string;
     placeholder: string;
-    unit?: string;
     tip: string;
+    unit?: string;
     tooltip?: string;
-    value?: string;
-    onChange?: (value: string) => void;
-    handler?: (value: string, onChange?: (v: string) => void) => void;
+    value: string;
+    onChange: (value: string) => void;
+    handler: (value: string, onChange: (v: string) => void) => void;
     handleBlur?: () => void;
 };
-const InputBox = ({ label, placeholder, unit, tip, tooltip, value = '', onChange, handler, handleBlur }: InputBoxProps) => {
+const InputBox = ({ label, placeholder, unit, tip, tooltip, value, onChange, handler, handleBlur }: InputBoxProps) => {
     const handleChange = (value: string) => {
         handler?.(value, onChange);
     }

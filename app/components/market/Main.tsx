@@ -3,21 +3,51 @@ import React from 'react'
 import InputBox from '../Ui/InputBox';
 import { algorithms, rebalancingPeriods } from '@/lib/contents/exData'; // Assuming algorithms is defined in exData
 import AssetData from './AssetData';
-import SelectBoxVirtual from '../Ui/SelectBoxVirtual';
-import { useAssetsDataStore } from '@/store/assetsDataStore';
+
 import AllCheckbox from '../Ui/AllCheckBox';
 import Momentum from './timingSetting/Momentum';
 import ReEntry from './timingSetting/ReEntry';
 import { handleInvestmentChange, handlePercentageChange } from '@/app/utils/inputHandlers';
 import SelectBox from '../Ui/SelectBox';
+import { useAssetStore } from '@/store/assetsStore';
+import { useStrategyStore } from '@/store/strategyStore';
+import { useMomentumStore } from '@/store/momentumStore';
+import { useReEntryStore } from '@/store/reEntryStore';
 
 const Main = () => {
 
+    const { strategyName, setStrategyName,
+        algorithm, setAlgorithm,
+        seed, setSeed, rebalancingPeriod,
+        setRebalancingPeriod, bandRebalancing,
+        setBandRebalancing, } = useStrategyStore();
+    const { assetList, addAsset, } = useAssetStore();
+    const saveAll = () => {
+        const strategy = useStrategyStore.getState().getData();
+        const asset = useAssetStore.getState().getData();
+        const momentum = useMomentumStore.getState().getData();
+        const reEntry = useReEntryStore.getState().getData();
 
-    const { assetList, addAssetList, strategyName, setStrategyName,
-        reset, algorithm, setAlgorithm,
-        seed, setSeed, rebalancingPeriod, setRebalancingPeriod,
-        bandRebalancing, setBandRebalancing, save } = useAssetsDataStore();
+        // 원하는 방식으로 저장 (예: 서버 전송, localStorage 등)
+        const allState = {
+            strategy,
+            asset,
+            momentum,
+            reEntry,
+        };
+        console.log('전체 저장:', allState);
+        // fetch('/api/save', { method: 'POST', body: JSON.stringify(allState) }) 등
+    };
+
+    // 초기화 로직
+    const resetAll = () => {
+        useStrategyStore.getState().reset();
+        useAssetStore.getState().reset();
+        useMomentumStore.getState().reset();
+        useReEntryStore.getState().reset();
+        console.log('모든 상태 초기화됨');
+    };
+
     return (
         <section className='min-w-[900px]'>
             <div className='flex justify-between items-start sticky top-[45px] z-[99] gap-[30px] w-full bg-transparent pointer-events-none'>
@@ -38,7 +68,7 @@ const Main = () => {
                     <button type="button"
                         className="flex items-center justify-center p-3
                      rounded font-bold bg-[#08c47f33] text-[#06c47f] w-[160px]"
-                        onClick={save}
+                        onClick={saveAll}
                     >
                         저장하기
                     </button>
@@ -119,7 +149,7 @@ const Main = () => {
                                     <div className="flex gap-5 items-center">
                                         <button type="button" className="justify-center w-full p-2 pr-3 text-gray15 rounded font-bold bg-white flex items-center 
                                                 gap-1 label-1-normal-medium"
-                                            onClick={() => addAssetList()}>
+                                            onClick={() => addAsset()}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
                                                 <path d="M13.5 9.75H9.75V13.5C9.75 13.6989 9.67098 13.8897 9.53033 14.0303C9.38968 14.171 9.19891 14.25 9 14.25C8.80109 14.25 8.61032 14.171 8.46967 14.0303C8.32902 13.8897 8.25 13.6989 8.25 13.5V9.75H4.5C4.30109 9.75 4.11032 9.67098 3.96967 9.53033C3.82902 9.38968 3.75 9.19891 3.75 9C3.75 8.80109 3.82902 8.61032 3.96967 8.46967C4.11032 8.32902 4.30109 8.25 4.5 8.25H8.25V4.5C8.25 4.30109 8.32902 4.11032 8.46967 3.96967C8.61032 3.82902 8.80109 3.75 9 3.75C9.19891 3.75 9.38968 3.82902 9.53033 3.96967C9.67098 4.11032 9.75 4.30109 9.75 4.5V8.25H13.5C13.6989 8.25 13.8897 8.32902 14.0303 8.46967C14.171 8.61032 14.25 8.80109 14.25 9C14.25 9.19891 14.171 9.38968 14.0303 9.53033C13.8897 9.67098 13.6989 9.75 13.5 9.75Z" fill="#151515" />
                                             </svg>
@@ -135,14 +165,14 @@ const Main = () => {
                         </div>
                     </div>
                     <div className='relative flex flex-col  '>
-
-
+                        <h2 className='body-1-normal-medium m-0 text-white'>
+                            <div className='flex items-center gap-[6px] body-1-normal-medium'>
+                                마켓 타이밍 설정
+                            </div>
+                        </h2>
                         <Momentum />
                         <div className='h-[1px] bg-[#252525]' />
-
-
                         <ReEntry />
-
                     </div>
                 </div>
 
@@ -151,7 +181,7 @@ const Main = () => {
                         <button className="flex items-center gap-1 
                         label-1-normal-regular text-white py-3 px-6
                         border border-gray3b rounded-[6px]"
-                            onClick={reset}
+                            onClick={resetAll}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                 <path fillRule="evenodd" clipRule="evenodd" d="M8.53033 7.21967C8.82322 7.51256 8.82322 7.98744 8.53033 8.28033L5.81066 11L8.53033 13.7197C8.82322 14.0126 8.82322 14.4874 8.53033 14.7803C8.23744 15.0732 7.76256 15.0732 7.46967 14.7803L4.21967 11.5303C3.92678 11.2374 3.92678 10.7626 4.21967 10.4697L7.46967 7.21967C7.76256 6.92678 8.23744 6.92678 8.53033 7.21967ZM12.5303 7.21967C12.8232 7.51256 12.8232 7.98744 12.5303 8.28033L10.5607 10.25H14.25C17.4256 10.25 20 12.8244 20 16V16.25C20 16.6642 19.6642 17 19.25 17C18.8358 17 18.5 16.6642 18.5 16.25V16C18.5 13.6528 16.5972 11.75 14.25 11.75H10.5607L12.5303 13.7197C12.8232 14.0126 12.8232 14.4874 12.5303 14.7803C12.2374 15.0732 11.7626 15.0732 11.4697 14.7803L8.21967 11.5303C7.92678 11.2374 7.92678 10.7626 8.21967 10.4697L11.4697 7.21967C11.7626 6.92678 12.2374 6.92678 12.5303 7.21967Z" fill="#CFCFCF" />

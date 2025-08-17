@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { menu } from '@/lib/contents/exData';
 import { useRouter } from 'next/navigation';
 
-const Header: React.FC = () => {
+const Header = () => {
     const [showDropdown, setShowDropdown] = useState<string | null>(null);
     const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
     const route = useRouter();

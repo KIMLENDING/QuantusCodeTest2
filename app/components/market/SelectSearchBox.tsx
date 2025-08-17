@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useEffect, } from "react";
 import { useDebounce } from "../../hooks/useDebouncd";
 import { FixedSizeList as List } from 'react-window';
 import RowData from "./RowData";
@@ -114,7 +114,7 @@ const SelectSearchBox = ({ label, options, placeholder, onChange }: SelectBoxPro
                                     height={280}
                                     itemCount={data.length}
                                     itemSize={44}
-                                    width={220}
+                                    width={235}
                                 >
                                     {({ index, style }) => (
                                         <RowData

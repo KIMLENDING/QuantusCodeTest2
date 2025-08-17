@@ -2,15 +2,29 @@ import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 import { AssetType } from '@/lib/contents/exData';
 
-
-
-
 export interface AssetData {
     id: string;
     type: AssetType;
     assetGroup: string;
     weight: string;
     exchangeRateState: boolean;
+}
+export interface MomentumSettings {
+    index: string;
+    baseLine: string;
+    baseMovingAvg: string;
+    baseLinePeriod: string;
+    boundaryLine: string;
+    boundaryMovingAvg: string;
+    boundaryPeriod: string;
+    entryWeight: string;
+    liquidationWeight: string;
+}
+export interface ReEntrySettings {
+    method: 'SMA' | 'EMA' | 'HMA';
+    period: string;
+    buyROC: string;
+    sellROC: string;
 }
 
 interface AssetsDataState {
@@ -21,6 +35,10 @@ interface AssetsDataState {
     bandRebalancing: string;
     allExchangeRatesState: boolean;
     assetList: AssetData[];
+    momentum: boolean;
+    momentumSettings: MomentumSettings;
+    reEntry: boolean;
+    reEntrySettings: ReEntrySettings;
     setStrategyName: (name: string) => void;
     setAlgorithm: (algorithm: string) => void;
     setSeed: (seed: string) => void;
@@ -28,6 +46,12 @@ interface AssetsDataState {
     setBandRebalancing: (band: string) => void;
     setAllExchangeRatesState: () => void;
     addAssetList: () => void;
+    setMomentum: (momentum: boolean) => void;
+    updateMomentumSettiongs: (settings: Partial<MomentumSettings>) => void;
+    getMomentumSettings: () => MomentumSettings;
+    setReEntry: (reEntry: boolean) => void;
+    updateReEntrySettings: (settings: Partial<ReEntrySettings>) => void;
+    getReEntrySettings: () => ReEntrySettings;
     updateAsset: (id: string, newData: Partial<AssetData>) => void;
     deleteAsset: (id: string) => void;
     getAssetItem: (id: string) => AssetData | undefined;
@@ -44,11 +68,96 @@ export const useAssetsDataStore = create<AssetsDataState>((set, get) => ({
     bandRebalancing: '',
     allExchangeRatesState: false,
     assetList: [],
+    momentum: false,
+    momentumSettings: {
+        index: '',
+        baseLine: '',
+        baseMovingAvg: '',
+        baseLinePeriod: '',
+        boundaryLine: '',
+        boundaryMovingAvg: '',
+        boundaryPeriod: '',
+        entryWeight: '',
+        liquidationWeight: ''
+    },
+    reEntry: false,
+    reEntrySettings: {
+        method: 'SMA',
+        period: '',
+        buyROC: '',
+        sellROC: ''
+    },
     setStrategyName: (name: string) => set({ strategyName: name }),
     setAlgorithm: (algorithm: string) => set({ algorithm }),
     setSeed: (seed: string) => set({ seed }),
     setRebalancingPeriod: (period: string) => set({ rebalancingPeriod: period }),
     setBandRebalancing: (band: string) => set({ bandRebalancing: band }),
+    setMomentum: (momentum: boolean) => set((state) => {
+        if (momentum) {
+            return {
+                momentum: true,
+                momentumSettings: {
+                    ...state.momentumSettings,
+                    index: 'NASDAQ 100',
+                    baseLine: '종가',
+                    baseMovingAvg: 'EMA',
+                    baseLinePeriod: '1',
+                    boundaryLine: '변동성 (표준편차)',
+                    boundaryMovingAvg: 'EMA',
+                    boundaryPeriod: '20',
+                    entryWeight: '1.5',
+                    liquidationWeight: '3'
+                }
+            };
+        }
+        return {
+            momentum: false,
+            momentumSettings: {
+                ...state.momentumSettings,
+                index: '',
+                baseLine: '',
+                baseMovingAvg: '',
+                baseLinePeriod: '',
+                boundaryLine: '',
+                boundaryMovingAvg: '',
+                boundaryPeriod: '',
+                entryWeight: '',
+                liquidationWeight: ''
+            }
+        };
+    }),
+    updateMomentumSettiongs: (settings: Partial<MomentumSettings>) => set((state) => ({
+        momentumSettings: { ...state.momentumSettings, ...settings }
+    })),
+    getMomentumSettings: () => get().momentumSettings,
+    setReEntry: (reEntry: boolean) => set((state) => {
+        if (reEntry) {
+            return {
+                reEntry: true,
+                reEntrySettings: {
+                    ...state.reEntrySettings,
+                    method: 'SMA',
+                    period: '20',
+                    buyROC: '0.05',
+                    sellROC: '0.05'
+                }
+            };
+        }
+        return {
+            reEntry: false,
+            reEntrySettings: {
+                ...state.reEntrySettings,
+                method: 'SMA',
+                period: '',
+                buyROC: '',
+                sellROC: ''
+            }
+        };
+    }),
+    updateReEntrySettings: (settings: Partial<ReEntrySettings>) => set((state) => ({
+        reEntrySettings: { ...state.reEntrySettings, ...settings }
+    })),
+    getReEntrySettings: () => get().reEntrySettings,
     setAllExchangeRatesState: () => set((state) => {
         // 전체 환율 반영 상태 업데이트
         if (state.assetList.length === 0) return {};

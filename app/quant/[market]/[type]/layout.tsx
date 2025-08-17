@@ -1,5 +1,5 @@
 
-import QuantTypeHeader from '@/app/components/QuantTypeHeader';
+import QuantTypeHeader from '@/app/components/market/Layout/QuantTypeHeader';
 import React from 'react'
 
 const Layout = async ({ children }: Readonly<{

@@ -1,18 +1,21 @@
 'use client';
-import React, { useState } from 'react'
-import InputBox from './InputBox';
+import React from 'react'
+import InputBox from '../Ui/InputBox';
 import { algorithms, rebalancingPeriods } from '@/lib/contents/exData'; // Assuming algorithms is defined in exData
 import AssetData from './AssetData';
-import SelectBox from './DataList/SelectBox';
+import SelectBoxVirtual from '../Ui/SelectBoxVirtual';
 import { useAssetsDataStore } from '@/store/assetsDataStore';
-import Checkbox from './DataList/CheckBox';
-import AllCheckbox from './DataList/AllCheckBox';
+import AllCheckbox from '../Ui/AllCheckBox';
+import Momentum from './timingSetting/Momentum';
+import ReEntry from './timingSetting/ReEntry';
+import { handleInvestmentChange, handlePercentageChange } from '@/app/utils/inputHandlers';
+import SelectBox from '../Ui/SelectBox';
 
 const Main = () => {
 
 
     const { assetList, addAssetList, strategyName, setStrategyName,
-        reset, setAllExchangeRatesState, algorithm, setAlgorithm,
+        reset, algorithm, setAlgorithm,
         seed, setSeed, rebalancingPeriod, setRebalancingPeriod,
         bandRebalancing, setBandRebalancing, save } = useAssetsDataStore();
     return (
@@ -69,15 +72,16 @@ const Main = () => {
                                 <div className='flex-shrink-0 h-[30px]' />
                                 <SelectBox label='자산배분 알고리즘' options={algorithms}
                                     placeholder='전략배분 (정적자산배분)'
-                                    selected={algorithm}
+                                    value={algorithm}
                                     onChange={setAlgorithm}
 
                                 />
                                 <div className='flex-shrink-0 h-[30px]' />
                                 <InputBox label='초기 투자 금액' placeholder='초기 투자 금액을 입력해주세요.'
                                     unit='만원' tip=''
-                                    initialValue={seed}
+                                    value={seed}
                                     onChange={setSeed}
+                                    handler={handleInvestmentChange}
 
                                 />
                             </div>
@@ -85,14 +89,15 @@ const Main = () => {
                             <div className='relative flex flex-col mb-[70px]'>
                                 <SelectBox label='주기 리밸런싱' options={rebalancingPeriods}
                                     placeholder='주기 리밸런싱을 선택해주세요.'
-                                    selected={rebalancingPeriod}
+                                    value={rebalancingPeriod}
                                     onChange={setRebalancingPeriod}
                                 />
                                 <div className='flex-shrink-0 h-[30px]' />
                                 <InputBox label='밴드 리밸런싱' placeholder='밴드 리밸런싱 기준을 입력해주세요.' unit='%'
                                     tip='0 ~ 100까지 입력할 수 있습니다. (0 입력시 비활성화)'
-                                    initialValue={bandRebalancing?.toString() || ''}
+                                    value={bandRebalancing?.toString() || ''}
                                     onChange={setBandRebalancing}
+                                    handler={handlePercentageChange}
 
                                 />
 
@@ -127,8 +132,17 @@ const Main = () => {
                                         <AssetData key={asset.id} id={asset.id} title={`자산 ${index + 1}`} end={index === assetList.length - 1} />
                                     )))
                             }
-
                         </div>
+                    </div>
+                    <div className='relative flex flex-col  '>
+
+
+                        <Momentum />
+                        <div className='h-[1px] bg-[#252525]' />
+
+
+                        <ReEntry />
+
                     </div>
                 </div>
 
@@ -147,6 +161,8 @@ const Main = () => {
                     </div>
                 </div>
             </section>
+
+
         </section>
     )
 }

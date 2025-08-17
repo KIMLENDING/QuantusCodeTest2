@@ -1,7 +1,7 @@
 'use client'
 
-import LeftSideBar from "@/app/components/LeftSideBar";
-import Main from "@/app/components/Main";
+import LeftSideBar from "@/app/components/market/Layout/LeftSideBar";
+import Main from "@/app/components/market/Main";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 

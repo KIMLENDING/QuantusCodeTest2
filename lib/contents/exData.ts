@@ -101,4 +101,35 @@ export const typeOfInvestment = [
 
 export type AssetType = typeof typeOfInvestment[number];
 
+export const indexs = [
+    'S&P 500',
+    'NASDAQ 100',
+    'Russell 2000 지수',
+    'KOSPI',
+    'KOSDAQ 150',
+    '다우 존스 산업지수',
+    '필라델피아 반도체 지수',
+    '미국 장기 국채 (ICE U.S. Treasury 20+ Year Bond Index)',
+    '미국 물가 연동채 (TIPS)',
+    '글로벌 리튬 지수 (Solactive Global Lithium Index)',
+    '아시아 태평양 지수 (MSCI AC Asia Pacific Index)',
+    '세계 금속 지수 (S&P Global Metals Index)',
+    '세계 농산물 지수 (S&P Global Agriculture Index)',
+    '세계 채권 지수 (Bloomberg Global Aggregate Bond Index)'
+]
 
+export const baseLines = [
+    '종가',
+    '고, 저 평균',
+    '고, 저, 종가 평균'
+]
+
+export const avgLines = [
+    'EMA',
+    'SMA'
+]
+
+export const bands = [
+    '변동성 (표준편차)',
+    'ATR (Average True Range)'
+]

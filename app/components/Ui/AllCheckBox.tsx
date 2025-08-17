@@ -1,29 +1,35 @@
 import { useAssetsDataStore } from "@/store/assetsDataStore";
 import { useEffect, useState } from "react";
-import TooltipComponent from "./TooltipComponent";
+import { Tooltip } from "react-tooltip";
 
 
-interface CheckboxProps {
+interface AllCheckboxProps {
     id: string;
     label: string;
     tip?: string;
     onChange?: (checked: boolean) => void;
 }
-const Checkbox = ({ id, label, tip, onChange }: CheckboxProps) => {
-    const { getAssetItem, assetList } = useAssetsDataStore();
-    const [checked, setChecked] = useState<boolean | undefined>(undefined);
-    console.log('개별체크박스', id, checked, getAssetItem(id));
+const AllCheckbox = ({ id = '전체 환율 반영', label = '전체 환율 반영', tip, onChange }: AllCheckboxProps) => {
+    const { allExchangeRatesState, setAllExchangeRatesState, assetList } = useAssetsDataStore();
+    const [checked, setChecked] = useState(false);
+    console.log(id, checked, allExchangeRatesState);
 
     useEffect(() => {
-        setChecked(getAssetItem(id)?.exchangeRateState);
-    }, [getAssetItem(id)])
+        setChecked(allExchangeRatesState);
+    }, [allExchangeRatesState,])
 
     const handleChange = () => {
         if (assetList.length === 0) return;
-        setChecked(!checked);
-        // 개별 자산에 대한 환율 반영 상태 업데이트
-        onChange?.(!getAssetItem(id)?.exchangeRateState);
 
+        // 미국 관련 자산군만 필터링
+        const usAssets = assetList.filter(asset =>
+            asset.type === '미국 자산군' ||
+            asset.type === '미국 ETF' ||
+            asset.type === '미국 주식'
+        );
+        if (usAssets.length === 0) return;
+        setChecked(!checked);
+        setAllExchangeRatesState();
     };
     return (
         <div className="flex items-center w-full gap-2">
@@ -41,7 +47,7 @@ const Checkbox = ({ id, label, tip, onChange }: CheckboxProps) => {
                 <input
                     id={id}
                     type="checkbox"
-                    checked={getAssetItem(id)?.exchangeRateState}
+                    checked={allExchangeRatesState}
                     onChange={handleChange}
                     className="sr-only"
                 />
@@ -76,22 +82,35 @@ const Checkbox = ({ id, label, tip, onChange }: CheckboxProps) => {
                     </svg>
                 </div>
 
-                <span className="text-nowrap text-white">{label}</span>
+                <span className="text-nowrap text-white text-sm">{label}</span>
             </label>
-            {tip && (
+            {tip && (<div>
 
-
-                <TooltipComponent
+                <span data-tooltip-id={`checkbox-tooltip-${id}`} className="cursor-help ml-1 flex items-center">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                    >
+                        <circle cx="12" cy="12" r="10" stroke="#4C4C4C" />
+                        <text x="12" y="16" textAnchor="middle" fontSize="14" fill="#4C4C4C" fontWeight="bold">?</text>
+                    </svg>
+                </span>
+                <Tooltip
                     id={`checkbox-tooltip-${id}`}
-                    place="right"
+                    place="bottom"
                     content={tip}
-                    style={{ backgroundColor: "#333", color: "#fff", padding: "8px", borderRadius: "4px" }}
+                    style={{ backgroundColor: "#333", color: "#fff", padding: "8px", borderRadius: "4px", width: "500px" }}
                 />
-
+            </div>
             )
             }
         </div>
     );
 }
 
-export default Checkbox;
+export default AllCheckbox;

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import SelectBox from './DataList/SelectBox'
-import InputBox from './InputBox'
+import InputBox from '../Ui/InputBox'
 import { typeOfInvestment } from '@/lib/contents/exData'
-import SelectSearchBox from './DataList/SelectSearchBox'
+import SelectSearchBox from './SelectSearchBox'
 import { useAssetsDataStore } from '@/store/assetsDataStore'
-import Checkbox from './DataList/CheckBox'
+import Checkbox from '../Ui/CheckBox'
+import { handlePercentageChange } from '@/app/utils/inputHandlers'
+import SelectBox from '../Ui/SelectBox'
 
 interface AssetGroupProps {
     id: string;
@@ -13,11 +14,9 @@ interface AssetGroupProps {
 const AssetGroup = ({ id }: AssetGroupProps) => {
 
     const [data, setData] = useState<any>([]);
-    const [type, setType] = useState<string>(''); // SelectBox 값
-    const [assetGroup, setAssetGroup] = useState<string>(''); // SelectSearchBox 값
-    const [weight, setWeight] = useState<string>('0'); // InputBox 값
-    const [exchange, setExchange] = useState<boolean>(false); // 체크박스 값
     const { updateAsset, getAssetItem } = useAssetsDataStore();
+    const asset = getAssetItem(id);
+    const usAsset = asset?.type === '미국 자산군' || asset?.type === '미국 ETF' || asset?.type === '미국 주식';
     const fetchData = () => {
         fetch("/words.json")
             .then((res) => res.json())
@@ -29,17 +28,19 @@ const AssetGroup = ({ id }: AssetGroupProps) => {
     }, []);
 
 
-    useEffect(() => {
-
-        updateAsset(id, {
-            type,
-            assetGroup,
-            weight: weight,
-            exchangeRateState: exchange
-        });
-        console.log(getAssetItem(id));
-
-    }, [type, assetGroup, weight, exchange, id, updateAsset]);
+    // 각 입력값 변경 시 바로 updateAsset 호출
+    const handleTypeChange = (type: string) => {
+        updateAsset(id, { type });
+    };
+    const handleAssetGroupChange = (assetGroup: string) => {
+        updateAsset(id, { assetGroup });
+    };
+    const handleWeightChange = (weight: string) => {
+        updateAsset(id, { weight });
+    };
+    const handleExchangeChange = (exchangeRateState: boolean) => {
+        updateAsset(id, { exchangeRateState });
+    };
 
 
 
@@ -53,28 +54,33 @@ const AssetGroup = ({ id }: AssetGroupProps) => {
                     label='종류'
                     options={typeOfInvestment}
                     placeholder='종류를 선택해주세요.'
-                    selected={type}
-                    onChange={setType}
+                    value={asset?.type}
+                    onChange={handleTypeChange}
                 />
                 <SelectSearchBox
                     label='자산군'
                     options={data}
                     placeholder='자산군을 선택해주세요.'
-                    onChange={setAssetGroup}
+                    onChange={handleAssetGroupChange}
                 />
                 <InputBox
                     label='비중'
                     placeholder='비중 비율을 입력해주세요.'
                     unit='%'
                     tip='0 - 100까지 입력할 수 있습니다.'
-                    initialValue={weight.toString()}
-                    onChange={setWeight}
+                    value={asset?.weight}
+                    onChange={handleWeightChange}
+                    handler={handlePercentageChange}
                 />
             </section>
             {
-                type === '미국 자산군' || type === '미국 ETF' || type === '미국 주식' ? (
-                    <Checkbox id={id} label="환율 반영" onChange={setExchange} />
-                ) : null
+                usAsset && (
+                    <Checkbox id={id} label="환율 반영"
+                        onChange={handleExchangeChange}
+                        checked={asset?.exchangeRateState}
+
+                    />
+                )
             }
         </div>
     )

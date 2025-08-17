@@ -1,14 +1,16 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import TooltipComponent from "./TooltipComponent";
 interface SelectBoxProps {
     label: string;
     placeholder?: string;
     options: string[];
-    selected?: string | null;
+    value?: string | null;
     onChange?: (value: string) => void;
+    tip?: string;
 }
-const SelectBox = ({ label, options, placeholder, selected, onChange }: SelectBoxProps) => {
+const SelectBox = ({ label, options, placeholder, value: selected, onChange, tip }: SelectBoxProps) => {
     const [open, setOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +35,11 @@ const SelectBox = ({ label, options, placeholder, selected, onChange }: SelectBo
         <div className='flex flex-col gap-4 w-full relative' ref={containerRef}>
 
 
-            <label htmlFor={label} className='label-1-normal-regular text-graycf'>{label}</label>
+            <div className="flex flex-row gap-2">
+
+                <label htmlFor={label} className='label-1-normal-regular text-graycf'>{label}</label>
+                {tip && (<TooltipComponent id={label} content={tip} />)}
+            </div>
             <div className="relative w-full">
                 <button id={label} className='w-full relative rounded-[6px] focus:ring-1' onClick={() => setOpen((prev) => !prev)}  >
                     <div className={`flex z-10  rounded-[6px] items-center justify-center h-[46px] border border-gray3b cursor-pointer hover:bg-[#3B3B3B]  `}>
@@ -59,7 +65,7 @@ const SelectBox = ({ label, options, placeholder, selected, onChange }: SelectBo
                                 className={`h-[44px] label-1-normal-regular flex flex-col items-center justify-center 
                                 text-center text-ellipsis overflow-hidden whitespace-nowrap px-3 py-[10px]  
                                 hover:bg-[#3B3B3B] rounded-[5px] cursor-pointer w-full
-                                 ${selected === item ? 'bg-[#3B3B3B]' : ''}`}
+                                ${selected === item ? 'bg-[#3B3B3B]' : ''}`}
                                 onClick={() => handleSelect(item)}
                             >
                                 {item}

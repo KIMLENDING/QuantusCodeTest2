@@ -18,6 +18,7 @@ const InputBox = ({ label, placeholder, unit, tip, tooltip, value, onChange, han
     const handleChange = (value: string) => {
         handler?.(value, onChange);
     }
+    console.log('BOX', label)
 
 
     return (

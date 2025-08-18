@@ -1,15 +1,23 @@
 'use client'
 
-import LeftSideBar from "@/app/components/market/Layout/LeftSideBar";
-import Main from "@/app/components/market/Main";
+
+import LeftSideBar from "@/components/market/Layout/LeftSideBar";
+import Main from "@/components/market/Main";
+
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
 const Market = () => {
   const { market, type } = useParams();
-  const subTitle = type === 'strategy-design' ? '전략 설계' :
-    type === 'my-investment' ? '내 투자' :
-      type === 'strategy' ? '전략' : '';
+
+  const getSubTitle = (type: string) => {
+    if (type === 'strategy-design') return '전략 설계';
+    if (type === 'my-investment') return '내 투자';
+    if (type === 'strategy') return '전략';
+    return '';
+  };
+
+  const subTitle = getSubTitle(type as string);
   return (
     <div className="flex-grow flex flex-col h-full ">
       <div className="min-h-[calc(100vh-400px)] w-full">

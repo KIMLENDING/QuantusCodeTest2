@@ -1,13 +1,9 @@
-
-import QuantTypeHeader from '@/app/components/market/Layout/QuantTypeHeader';
+import QuantTypeHeader from '@/components/market/Layout/QuantTypeHeader';
 import React from 'react'
-
 const Layout = async ({ children }: Readonly<{
     children: React.ReactNode;
 
 }>) => {
-
-
     return (
         <main className="w-full flex-grow mx-auto">
             <QuantTypeHeader />

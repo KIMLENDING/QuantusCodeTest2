@@ -15,11 +15,12 @@ export interface MomentumSettings {
 interface MomentumStoreState {
     momentum: boolean;
     momentumSettings: MomentumSettings;
-    setMomentum: (momentum: boolean) => void;
-    updateMomentumSettiongs: (settings: Partial<MomentumSettings>) => void;
-    getMomentumSettings: () => MomentumSettings;
-    getData: () => { momentum: boolean; momentumSettings: MomentumSettings };
-    reset: () => void;
+    actions: {
+        setMomentum: (momentum: boolean) => void;
+        updateMomentumSettiongs: (settings: Partial<MomentumSettings>) => void;
+        getData: () => { momentum: boolean; momentumSettings: MomentumSettings };
+        reset: () => void;
+    }
 }
 
 export const useMomentumStore = create<MomentumStoreState>((set, get) => ({
@@ -35,27 +36,28 @@ export const useMomentumStore = create<MomentumStoreState>((set, get) => ({
         entryWeight: '',
         liquidationWeight: ''
     },
-    setMomentum: (momentum) => set({ momentum }),
-    updateMomentumSettiongs: (settings) => set((state) => ({
-        momentumSettings: { ...state.momentumSettings, ...settings }
-    })),
-    getMomentumSettings: () => get().momentumSettings,
-    getData: () => ({
-        momentum: get().momentum,
-        momentumSettings: get().momentumSettings
-    }),
-    reset: () => set({
-        momentum: false,
-        momentumSettings: {
-            index: '',
-            baseLine: '',
-            baseMovingAvg: '',
-            baseLinePeriod: '',
-            boundaryLine: '',
-            boundaryMovingAvg: '',
-            boundaryPeriod: '',
-            entryWeight: '',
-            liquidationWeight: ''
-        }
-    }),
+    actions: {
+        setMomentum: (momentum) => set({ momentum }),
+        updateMomentumSettiongs: (settings) => set((state) => ({
+            momentumSettings: { ...state.momentumSettings, ...settings }
+        })),
+        getData: () => ({
+            momentum: get().momentum,
+            momentumSettings: get().momentumSettings
+        }),
+        reset: () => set({
+            momentum: false,
+            momentumSettings: {
+                index: '',
+                baseLine: '',
+                baseMovingAvg: '',
+                baseLinePeriod: '',
+                boundaryLine: '',
+                boundaryMovingAvg: '',
+                boundaryPeriod: '',
+                entryWeight: '',
+                liquidationWeight: ''
+            }
+        }),
+    }
 }));

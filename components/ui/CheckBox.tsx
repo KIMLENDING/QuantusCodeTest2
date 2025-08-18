@@ -9,7 +9,7 @@ interface CheckboxProps {
     onChange: (checked: boolean) => void;
 }
 const Checkbox = ({ id, label, tip, checked, onChange, }: CheckboxProps) => {
-
+    console.log('Checkbox', label)
     const handleChange = () => {
         onChange(!checked);
     };

@@ -13,7 +13,7 @@ interface SelectBoxProps {
 const SelectBox = ({ label, options, placeholder, value, onChange, tooltip }: SelectBoxProps) => {
     const [open, setOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
-
+    console.log('selectBox', label)
     // 바깥 클릭 시 닫힘 처리
     useEffect(() => {
         function handleClickOutside(e: MouseEvent) {

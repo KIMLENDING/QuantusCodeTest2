@@ -10,11 +10,13 @@ export interface ReEntrySettings {
 interface ReEntryStoreState {
     reEntry: boolean;
     reEntrySettings: ReEntrySettings;
-    setReEntry: (reEntry: boolean) => void;
-    updateReEntrySettings: (settings: Partial<ReEntrySettings>) => void;
-    getReEntrySettings: () => ReEntrySettings;
-    getData: () => { reEntry: boolean; reEntrySettings: ReEntrySettings };
-    reset: () => void;
+    actions: {
+
+        setReEntry: (reEntry: boolean) => void;
+        updateReEntrySettings: (settings: Partial<ReEntrySettings>) => void;
+        getData: () => { reEntry: boolean; reEntrySettings: ReEntrySettings };
+        reset: () => void;
+    }
 }
 
 export const useReEntryStore = create<ReEntryStoreState>((set, get) => ({
@@ -25,22 +27,23 @@ export const useReEntryStore = create<ReEntryStoreState>((set, get) => ({
         buyROC: '100',
         sellROC: '100'
     },
-    setReEntry: (reEntry) => set({ reEntry }),
-    updateReEntrySettings: (settings) => set((state) => ({
-        reEntrySettings: { ...state.reEntrySettings, ...settings }
-    })),
-    getReEntrySettings: () => get().reEntrySettings,
-    getData: () => ({
-        reEntry: get().reEntry,
-        reEntrySettings: get().reEntrySettings
-    }),
-    reset: () => set({
-        reEntry: false,
-        reEntrySettings: {
-            method: 'SMA',
-            period: '20',
-            buyROC: '100',
-            sellROC: '100'
-        }
-    }),
+    actions: {
+        setReEntry: (reEntry) => set({ reEntry }),
+        updateReEntrySettings: (settings) => set((state) => ({
+            reEntrySettings: { ...state.reEntrySettings, ...settings }
+        })),
+        getData: () => ({
+            reEntry: get().reEntry,
+            reEntrySettings: get().reEntrySettings
+        }),
+        reset: () => set({
+            reEntry: false,
+            reEntrySettings: {
+                method: 'SMA',
+                period: '20',
+                buyROC: '100',
+                sellROC: '100'
+            }
+        }),
+    }
 }));

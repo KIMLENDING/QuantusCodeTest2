@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect, } from "react";
-import { useDebounce } from "../../hooks/useDebouncd";
+
 import { FixedSizeList as List } from 'react-window';
 import RowData from "./RowData";
+import { useDebounce } from "@/hooks/useDebouncd";
 interface SelectBoxProps {
     label: string;
     placeholder?: string;
@@ -11,11 +12,8 @@ interface SelectBoxProps {
     onChange: (value: string) => void;
 }
 
-
-
-
 const SelectSearchBox = ({ label, options, placeholder, onChange }: SelectBoxProps) => {
-
+    console.log('SelectSearchBox', label)
     const [open, setOpen] = useState(false);
     const [selected, setSelected] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');

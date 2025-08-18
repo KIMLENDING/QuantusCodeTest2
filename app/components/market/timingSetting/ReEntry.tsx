@@ -74,8 +74,6 @@ const ReEntry = () => {
                             }
                         }}
                     />
-
-
                 </article>
             )}
         </div>

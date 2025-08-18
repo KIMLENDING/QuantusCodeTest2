@@ -8,7 +8,7 @@ interface SelectBoxProps {
     label: string;
     placeholder?: string;
     options: { word: string }[];
-    onChange?: (value: string) => void;
+    onChange: (value: string) => void;
 }
 
 
@@ -53,7 +53,7 @@ const SelectSearchBox = ({ label, options, placeholder, onChange }: SelectBoxPro
 
     const handleSelect = (item: string) => {
         setSelected(item);
-        onChange?.(item);
+        onChange(item);
         setOpen(false);
         setSearchTerm(''); // 선택 후 검색어 초기화
     };

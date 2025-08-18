@@ -7,8 +7,8 @@ interface SelectBoxProps {
     label: string;
     placeholder?: string;
     options: string[];
-    value?: string | null;
-    onChange?: (value: string) => void;
+    value: string | null;
+    onChange: (value: string) => void;
 }
 const SelectBoxVirtual = ({ label, options, placeholder, value: selected, onChange }: SelectBoxProps) => {
     const [open, setOpen] = useState(false);
@@ -28,7 +28,7 @@ const SelectBoxVirtual = ({ label, options, placeholder, value: selected, onChan
 
     const handleSelect = (item: string) => {
         setOpen(false);
-        onChange?.(item);
+        onChange(item);
     };
 
     return (

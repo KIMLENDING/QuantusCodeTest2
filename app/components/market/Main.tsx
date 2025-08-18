@@ -13,6 +13,7 @@ import { useAssetStore } from '@/store/assetsStore';
 import { useStrategyStore } from '@/store/strategyStore';
 import { useMomentumStore } from '@/store/momentumStore';
 import { useReEntryStore } from '@/store/reEntryStore';
+import Checkbox from '../Ui/CheckBox';
 
 const Main = () => {
 
@@ -38,6 +39,39 @@ const Main = () => {
         console.log('전체 저장:', allState);
         // fetch('/api/save', { method: 'POST', body: JSON.stringify(allState) }) 등
     };
+    const handleAllCheck = () => {
+        // 미국 자산군 
+        const usAssets = assetList.filter(asset =>
+            asset.type === '미국 자산군' ||
+            asset.type === '미국 ETF' ||
+            asset.type === '미국 주식'
+        );
+        // 자산군이 있을 때
+        if (usAssets.length !== 0) {
+            // 참이면 
+            const allExchangeRatesState = usAssets.every(asset => asset.exchangeRateState);
+            if (allExchangeRatesState) return true; // 체크박스 활성화
+            // 거짓이면 체크박스 비활성화
+            return false;
+        }
+        // 자산군이 없으면 체크박스 비활성화
+        return false;
+    }
+    const onChangeAllCheck = (checked: boolean) => {
+        // 미국 자산군만 필터링
+        const usAssets = assetList.filter(asset =>
+            asset.type === '미국 자산군' ||
+            asset.type === '미국 ETF' ||
+            asset.type === '미국 주식'
+        );
+        // 미국 관련 자산군이 있을 때만 전체 환율 반영 상태 업데이트
+        if (usAssets.length !== 0) {
+            usAssets.forEach(asset => {
+                useAssetStore.getState().updateAsset(asset.id, { exchangeRateState: checked });
+            });
+        }
+
+    }
 
     // 초기화 로직
     const resetAll = () => {
@@ -133,7 +167,11 @@ const Main = () => {
 
                             </div>
                         </div>
-                        <AllCheckbox id="전체 환율 반영" label="전체 환율 반영" />
+                        <Checkbox id='전체 환율 반영' label='전체 환율 반영'
+                            tip=''
+                            checked={handleAllCheck()}
+                            onChange={onChangeAllCheck}
+                        />
                         <div className='flex-shrink-0 h-[30px]' />
                         <div className='relative flex flex-col'>
                             <div>

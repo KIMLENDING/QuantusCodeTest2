@@ -6,11 +6,11 @@ interface SelectBoxProps {
     label: string;
     placeholder?: string;
     options: string[];
-    value?: string | null;
-    onChange?: (value: string) => void;
+    value?: string;
+    onChange: (value: string) => void;
     tooltip?: string;
 }
-const SelectBox = ({ label, options, placeholder, value: selected, onChange, tooltip }: SelectBoxProps) => {
+const SelectBox = ({ label, options, placeholder, value, onChange, tooltip }: SelectBoxProps) => {
     const [open, setOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -28,7 +28,7 @@ const SelectBox = ({ label, options, placeholder, value: selected, onChange, too
 
     const handleSelect = (item: string) => {
         setOpen(false);
-        onChange?.(item);
+        onChange(item);
     };
 
     return (
@@ -45,7 +45,7 @@ const SelectBox = ({ label, options, placeholder, value: selected, onChange, too
                     <div className={`flex z-10  rounded-[6px] items-center justify-center h-[46px] border border-gray3b cursor-pointer hover:bg-[#3B3B3B]  `}>
                         <div className='h-[44px] text-white flex items-center justify-center label-1-normal-regular cursor-pointer text-center text-ellipsis overflow-hidden whitespace-nowrap label-1-normal-medium'>
                             <div className='text-white'>
-                                {selected || placeholder}
+                                {value || placeholder}
                             </div>
                             <div className="absolute right-[12px] h-[48px] flex items-center ">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={` w-4 h-4 ${open ? 'rotate-270' : 'rotate-90'}`} vectorEffect="non-scaling-stroke">
@@ -65,7 +65,7 @@ const SelectBox = ({ label, options, placeholder, value: selected, onChange, too
                                 className={`h-[44px] label-1-normal-regular flex flex-col items-center justify-center 
                                 text-center text-ellipsis overflow-hidden whitespace-nowrap px-3 py-[10px]  
                                 hover:bg-[#3B3B3B] rounded-[5px] cursor-pointer w-full
-                                ${selected === item ? 'bg-[#3B3B3B]' : ''}`}
+                                ${value === item ? 'bg-[#3B3B3B]' : ''}`}
                                 onClick={() => handleSelect(item)}
                             >
                                 {item}

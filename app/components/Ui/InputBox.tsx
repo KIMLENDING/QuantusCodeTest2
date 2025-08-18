@@ -9,7 +9,7 @@ interface InputBoxProps {
     tip: string;
     unit?: string;
     tooltip?: string;
-    value: string;
+    value?: string;
     onChange: (value: string) => void;
     handler: (value: string, onChange: (v: string) => void) => void;
     handleBlur?: () => void;

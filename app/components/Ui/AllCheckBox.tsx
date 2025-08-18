@@ -8,14 +8,11 @@ interface AllCheckboxProps {
     id: string;
     label: string;
     tip?: string;
-    onChange?: (checked: boolean) => void;
 }
-const AllCheckbox = ({ id = '전체 환율 반영', label = '전체 환율 반영', tip, onChange }: AllCheckboxProps) => {
+const AllCheckbox = ({ id = '전체 환율 반영', label = '전체 환율 반영', tip, }: AllCheckboxProps) => {
     const { allExchangeRatesState, setAllExchangeRatesState } = useStrategyStore();
-
     const { assetList } = useAssetStore();
     const [checked, setChecked] = useState(false);
-    console.log(id, checked, allExchangeRatesState);
 
     useEffect(() => {
         setChecked(allExchangeRatesState);

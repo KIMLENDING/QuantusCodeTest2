@@ -11,7 +11,7 @@ interface CheckboxProps {
 const Checkbox = ({ id, label, tip, checked, onChange, }: CheckboxProps) => {
 
     const handleChange = () => {
-        onChange?.(!checked);
+        onChange(!checked);
     };
     return (
         <div className="flex items-center w-full gap-2">

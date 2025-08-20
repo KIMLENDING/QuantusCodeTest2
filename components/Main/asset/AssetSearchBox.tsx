@@ -17,6 +17,7 @@ const AssetSearchBox = ({ id }: { id: string }) => {
     const handleAssetGroupChange = (assetGroup: string) => {
         updateAsset(id, { assetGroup, exchangeRateState: false }); // 자산군
     };
+
     if (!data) return <p>Loading...</p>;
     return (
         <SelectSearchBox

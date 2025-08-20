@@ -14,12 +14,11 @@ const Checkbox = ({ id, label, tip, checked, onChange, }: CheckboxProps) => {
         onChange(!checked);
     };
     return (
-        <div className="flex items-center w-full gap-2">
+        <div className="flex items-center w-fit gap-2">
             <label
                 htmlFor={id}
                 className="flex items-center gap-2 w-fit cursor-pointer"
                 style={{
-                    minWidth: 140,
                     fontSize: 16,
                     fontWeight: 400,
                     color: "#fff",

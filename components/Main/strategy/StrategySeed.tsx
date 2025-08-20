@@ -4,7 +4,6 @@ import { useStrategyStore } from '@/store/strategyStore';
 import InputBox from '@/components/ui/InputBox';
 import { handleInvestmentChange } from '@/utils/inputHandlers';
 
-
 const StrategySeed = () => {
     const seed = useStrategyStore(state => state.seed);
     const setSeed = useStrategyStore(state => state.actions.setSeed);

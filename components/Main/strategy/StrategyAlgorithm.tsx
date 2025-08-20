@@ -4,7 +4,7 @@ import { useStrategyStore } from '@/store/strategyStore';
 import { algorithms } from '@/lib/contents/exData';
 import SelectBox from '@/components/ui/SelectBox';
 
-const StrategyAlgorithm = React.memo(() => {
+const StrategyAlgorithm = () => {
     const algorithm = useStrategyStore(state => state.algorithm);
     const setAlgorithm = useStrategyStore(state => state.actions.setAlgorithm);
 
@@ -16,6 +16,6 @@ const StrategyAlgorithm = React.memo(() => {
 
         />
     );
-});
+};
 
 export default StrategyAlgorithm
